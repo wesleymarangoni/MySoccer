@@ -1,0 +1,23 @@
+<ion-menu [content]="mainContent">
+  <ion-content id="side-menu21" style="background-color:#FFFFFF;">
+    <ion-list id="menu-list1">
+      <ion-item color="none" menuClose="" on-click="goToHome()" id="menu-list-item2">
+        Home
+      </ion-item>
+      <ion-item color="none" menuClose="" on-click="goToTimes()" id="menu-list-item25">
+        Times
+      </ion-item>
+      <ion-item color="none" menuClose="" on-click="goToCampeonatos()" id="menu-list-item3">
+        Campeonatos
+      </ion-item>
+      <ion-item color="none" menuClose="" on-click="goToContato()" id="menu-list-item5">
+        Contato
+      </ion-item>
+      <ion-item color="none" menuClose="" on-click="goToSobre()" id="menu-list-item6">
+        Sobre
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-nav #mainContent [root]="rootPage"></ion-nav>
