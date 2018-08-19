@@ -11,4 +11,10 @@ export class SoccerProvider {
   getSoccer(){
    return this.http.get(this.baseApiPath + "api/soccer/getlist");
   }
+
+  getSoccer(){
+    return this.http.get(this.baseApiPath + "api/soccer/getlist");
+   }
+
+  
 }

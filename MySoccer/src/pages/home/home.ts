@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,ToastController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController,ToastController, NavParams, LoadingController, ItemContent } from 'ionic-angular';
 import { NewsDetailPage} from '../news-detail/news-detail';
 import { SoccerProvider } from '../../providers/soccer/soccer';
 
@@ -11,7 +11,8 @@ export class HomePage {
   listNews =[];
   public loader;
   public refresher;
-  public isRefreshing: boolean = false;
+  public isRefresher: boolean = false;
+  public isInfinit: boolean = false;
   public infiniteScroll;
 
   constructor(public navCtrl: NavController,
@@ -20,33 +21,40 @@ export class HomePage {
   public loadingCtrl: LoadingController) {
   }
 
-  presentLoading() {
+  public presentLoading() {
     this.loader = this.loadingCtrl.create({
       content: "Carregando Noticias...",
     });
     this.loader.present();
   }
-  closeLoading(){
+ public closeLoading(){
     this.loader.dismiss();
   }
 
+
   doRefresh(refresher) {
     this.refresher = refresher;
-    this.isRefreshing = true;
-
-    this.loadingNews();
-
+    this.isRefresher = true;
+    this.listNews.length = 0;
     setTimeout(() => {
-      console.log('Async operation has ended');
+      //console.log('Async operation has ended');
       refresher.complete();
+
+      this.loadingNews();
+      refresher.complete();
+
     }, 2000);
   }
 
-
   doInfinite(infiniteScroll) {
     this.infiniteScroll = infiniteScroll;
+    this.isInfinit = true;
+
     this.loadingNews();
-    infiniteScroll.complete();
+    setTimeout(() => {
+      //console.log('Passou aqui');
+      infiniteScroll.complete();
+    }, 2000);
   }
 
   ionViewDidEnter(){
@@ -62,26 +70,28 @@ export class HomePage {
         for(let i = 0; i < objectReturn.length; i++){
           this.listNews.push(objectReturn[i]);
         }
+
+        //limpar array pra fazer loading;
          console.log(objectReturn);
          this.closeLoading();
-         
-         if(this.isRefreshing){
-           this.refresher.complete;
-           this.isRefreshing = false;
-         }
+          if(this.isInfinit){
+          this.infiniteScroll.complete;
+          this.infiniteScroll = false;
+        }
       },error =>{
         console.log(error);
         this.closeLoading();
-        if(this.isRefreshing){
-          this.refresher.complete;
-          this.isRefreshing = false;
+        if(this.isInfinit){
+          this.infiniteScroll.complete;
+          this.isInfinit = false;
         }
       })
   }
   newSelected(item:any){
     //abre LOADING
     this.presentLoading();
-    this.navCtrl.push(NewsDetailPage,{new:item});
+    this.navCtrl.push(NewsDetailPage,{id:item.id});
+    console.log(item.id);
     //fecha LOADING
     this.closeLoading();
   }
